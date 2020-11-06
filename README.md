@@ -1,4 +1,4 @@
-<img src="https://user-images.githubusercontent.com/121827/78813826-4709ac80-79d6-11ea-9406-247ebabd815b.png" height="175">
+<img src="https://user-images.githubusercontent.com/134798/98393425-40541e00-2027-11eb-9412-3247cc1b5072.png" height="175">
 
 ![iOS](https://img.shields.io/badge/iOS-10%20-blue)
 ![macOS](https://img.shields.io/badge/macOS-10.15-blue)
@@ -39,37 +39,26 @@
 4. Build & run!
 
 ### 2. macOS App
-[Download the latest release](https://github.com/mhdhejazi/CoronaTracker/releases/latest) for macOS.
+[Download the latest release](https://github.com/rbottoms/SpatialReality/releases/latest) for macOS.
 
 Or install via [brew](http://brew.sh):
 
   ```bash
-  brew cask install corona-tracker
+  brew cask install spatialreality
   ```
 
-## Contribute
-Please feel free to contribute pull requests or create issues for bugs and feature requests.
+## Fork Info
+Forked code from Mhd Hejazi's brilliant CoronaTracker https://github.com/mhdhejazi/CoronaTracker
 
 ## Author
-Mhd Hejazi <a href="https://twitter.com/intent/follow?screen_name=Hejazi"><img src="https://img.shields.io/badge/@hejazi-x?color=08a0e9&logo=twitter&logoColor=white" valign="middle" /></a> (contact@samabox.com)
+Richard Bottoms <a href="https://twitter.com/intent/follow?screen_name=rbottoms"><img src="https://img.shields.io/badge/@hejazi-x?color=08a0e9&logo=twitter&logoColor=white" valign="middle" /></a> (contact@intelligentmessenger.com)
 
 ## Credits
-### Data
+### Temp Data
 Data is provided by JHU CSSE (https://github.com/CSSEGISandData/COVID-19).
 
 ### Translations
-* __German__ by [@sebastianbinder](https://github.com/sebastianbinder)
-* __Swedish__ by [@FluffyDev2019](https://github.com/FluffyDev2019)
-* __Portuguese__ by [@ppamorim](https://github.com/ppamorim)
-* __Italian__ by [@Ale111](https://github.com/Ale111)
-* __French__ by [@Risengan](https://github.com/Risengan)
-* __Russian__ by [@wacumov](https://github.com/wacumov)
-* __Simplified Chinese__ by [@erickzli](https://github.com/erickzli)
-* __Spanish__ by [@ejewik](https://github.com/ejewik)
-* __Japanese__ by [@dev-sora](https://github.com/dev-sora)
-* __Polish__ by [@pbeo](https://github.com/pbeo)
-* __Dutch__ by [@hdatteln](https://github.com/hdatteln)
-* __Romanian__ by [@rhcpfan](https://github.com/rhcpfan)
+
 
 ### Libraries
 * [CSV.swift](https://github.com/yaslab/CSV.swift): For parsing the CSV data file.
