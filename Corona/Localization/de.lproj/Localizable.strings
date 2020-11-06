@@ -1,0 +1,37 @@
+/* 
+  Corona Tracker
+  Translation by Sebastian Binder - github.com/sebastianbinder
+  and Jakob Fuchs - github.com/jsf030
+  Copyright © 2020 Samabox. All rights reserved.
+*/
+
+"case.confirmed" = "Bestätigt";
+"case.active" = "Aktiv";
+"case.recovered" = "Genesen";
+"case.deaths" = "Gestorben";
+"region.world" = "Weltweit";
+"chart.axis.days" = "%d Tage";
+"chart.history" = "Entwicklung der Fälle";
+"chart.topCountries" = "Am stärksten betroffene Länder";
+"chart.trendline" = "Bestätigte Fälle nach dem 100. Fall";
+"chart.logarithmic" = "Logarithmische Darstellung";
+"chart.delta" = "Neue Fälle pro Tag";
+"chart.delta.deaths" = "Täglich gestorben";
+"chart.delta.increasing" = "Zunehmend";
+"chart.delta.decreasing" = "Abnehmend";
+"data.updating" = "Aktualisieren...";
+"data.updateDate" = "Zuletzt aktualisiert:";
+"data.errorTitle" = "Konnte nicht aktualisiert werden";
+"data.errorMessage" = "Bitte Internetverbindung überprüfen";
+"data.source" = "Quelle: %@";
+"app.newVersionTitle" = "Neue Version verfügbar";
+"app.newVersionMessage" = "Bitte von %@ aktualisieren";
+"message.cancel" = "Abbrechen";
+"message.open" = "Öffnen";
+"message.ok" = "OK";
+"message.done" = "Fertig";
+"menu.copy" = "Kopieren";
+"menu.update" = "Aktualisieren";
+"menu.share" = "Teilen";
+"share.current" = "Corona-Virus aktuell";
+"share.chartHistory" = "Ausbreitung des Corona-Virus";
