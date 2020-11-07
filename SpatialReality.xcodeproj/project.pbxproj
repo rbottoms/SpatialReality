@@ -66,7 +66,6 @@
 		1186BC5D24291D4000097E9E /* DeltaChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186BC5C24291D4000097E9E /* DeltaChartView.swift */; };
 		1186BC642429FCF800097E9E /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1186BC622429FCF800097E9E /* LaunchScreen.storyboard */; };
 		1186BC652429FCF800097E9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1186BC632429FCF800097E9E /* Main.storyboard */; };
-		1186BC672429FD7200097E9E /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1186BC662429FD7200097E9E /* Main.storyboard */; };
 		1186BC6E242B608200097E9E /* RegionDataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186BC6D242B608200097E9E /* RegionDataController.swift */; };
 		1186BC72242B64FE00097E9E /* RegionDataCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1186BC71242B64FE00097E9E /* RegionDataCell.swift */; };
 		119043B9242F6F2B0080E405 /* TrendlineChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 119043B8242F6F2B0080E405 /* TrendlineChartView.swift */; };
@@ -94,7 +93,9 @@
 		3447B4BD241E7790003914AF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3447B4BC241E7790003914AF /* App.swift */; };
 		344ED322241AC7AA004C4EA8 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 344ED321241AC7AA004C4EA8 /* NotificationCenter.framework */; };
 		344ED32C241AC7AA004C4EA8 /* Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 344ED31F241AC7AA004C4EA8 /* Widget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		344ED333241ACCC9004C4EA8 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 344ED324241AC7AA004C4EA8 /* TodayViewController.swift */; };
+		B2216A9F2556BB44000277A9 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2216A9E2556BB44000277A9 /* TodayViewController.swift */; };
+		B2216AA12556BBAA000277A9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2216AA02556BBAA000277A9 /* Info.plist */; };
+		B2216AA32556BBB6000277A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2216AA22556BBB6000277A9 /* Main.storyboard */; };
 		CDA50DE0242C7D330055BE4A /* CSV in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 115186B3241FB00000EBC83E /* CSV */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CDA50DE2242C7D350055BE4A /* Disk in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 115186B0241FAFF300EBC83E /* Disk */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CDA50DE3242C7D3C0055BE4A /* CSV in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 115186B7241FB04200EBC83E /* CSV */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -186,7 +187,6 @@
 		1186BC5C24291D4000097E9E /* DeltaChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DeltaChartView.swift; sourceTree = "<group>"; };
 		1186BC622429FCF800097E9E /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1186BC632429FCF800097E9E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		1186BC662429FD7200097E9E /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		1186BC6A242A743000097E9E /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		1186BC6D242B608200097E9E /* RegionDataController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegionDataController.swift; sourceTree = "<group>"; };
 		1186BC71242B64FE00097E9E /* RegionDataCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegionDataCell.swift; sourceTree = "<group>"; };
@@ -218,9 +218,10 @@
 		3447B4BC241E7790003914AF /* App.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
 		344ED31F241AC7AA004C4EA8 /* Widget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = Widget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		344ED321241AC7AA004C4EA8 /* NotificationCenter.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = NotificationCenter.framework; path = System/Library/Frameworks/NotificationCenter.framework; sourceTree = SDKROOT; };
-		344ED324241AC7AA004C4EA8 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
-		344ED329241AC7AA004C4EA8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		34C02EBB2431246C00AE80FE /* pl */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = pl; path = pl.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B2216A9E2556BB44000277A9 /* TodayViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodayViewController.swift; sourceTree = "<group>"; };
+		B2216AA02556BBAA000277A9 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B2216AA22556BBB6000277A9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		FC5A29A624400862005C58BB /* ko */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ko; path = ko.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -305,8 +306,8 @@
 		1162D11F240D05F600647002 = {
 			isa = PBXGroup;
 			children = (
+				B2216AA42556BBC0000277A9 /* Widget */,
 				1162D12A240D05F600647002 /* Corona */,
-				344ED323241AC7AA004C4EA8 /* Widget */,
 				344ED320241AC7AA004C4EA8 /* Frameworks */,
 				1162D129240D05F600647002 /* Products */,
 			);
@@ -498,12 +499,12 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		344ED323241AC7AA004C4EA8 /* Widget */ = {
+		B2216AA42556BBC0000277A9 /* Widget */ = {
 			isa = PBXGroup;
 			children = (
-				344ED324241AC7AA004C4EA8 /* TodayViewController.swift */,
-				1186BC662429FD7200097E9E /* Main.storyboard */,
-				344ED329241AC7AA004C4EA8 /* Info.plist */,
+				B2216A9E2556BB44000277A9 /* TodayViewController.swift */,
+				B2216AA22556BBB6000277A9 /* Main.storyboard */,
+				B2216AA02556BBAA000277A9 /* Info.plist */,
 			);
 			path = Widget;
 			sourceTree = "<group>";
@@ -623,6 +624,8 @@
 				1186BC642429FCF800097E9E /* LaunchScreen.storyboard in Resources */,
 				117C84DA2427E3E200688459 /* Localizable.strings in Resources */,
 				1162D135240D05FA00647002 /* Assets.xcassets in Resources */,
+				B2216AA32556BBB6000277A9 /* Main.storyboard in Resources */,
+				B2216AA12556BBAA000277A9 /* Info.plist in Resources */,
 				1186BC652429FCF800097E9E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -632,7 +635,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				117C84DB2427E3E200688459 /* Localizable.strings in Resources */,
-				1186BC672429FD7200097E9E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -663,6 +665,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2216A9F2556BB44000277A9 /* TodayViewController.swift in Sources */,
 				111C76B62412C90500368F08 /* SystemColor.swift in Sources */,
 				115186AA241FAFCE00EBC83E /* JHUWebDataService.swift in Sources */,
 				115186A9241FAFCE00EBC83E /* DataService.swift in Sources */,
@@ -730,7 +733,6 @@
 				115186AC241FAFCE00EBC83E /* DataService.swift in Sources */,
 				115186AE241FAFCE00EBC83E /* JHURepoDataService.swift in Sources */,
 				117C84EB2428119600688459 /* Strings.swift in Sources */,
-				344ED333241ACCC9004C4EA8 /* TodayViewController.swift in Sources */,
 				115186A5241FAFCA00EBC83E /* TimeSeries.swift in Sources */,
 				1151869E241FAFC500EBC83E /* DataManager.swift in Sources */,
 				115186A8241FAFCA00EBC83E /* Region.swift in Sources */,
