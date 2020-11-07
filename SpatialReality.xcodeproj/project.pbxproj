@@ -93,9 +93,8 @@
 		3447B4BD241E7790003914AF /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3447B4BC241E7790003914AF /* App.swift */; };
 		344ED322241AC7AA004C4EA8 /* NotificationCenter.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 344ED321241AC7AA004C4EA8 /* NotificationCenter.framework */; };
 		344ED32C241AC7AA004C4EA8 /* Widget.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 344ED31F241AC7AA004C4EA8 /* Widget.appex */; platformFilter = ios; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
-		B2216A9F2556BB44000277A9 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2216A9E2556BB44000277A9 /* TodayViewController.swift */; };
-		B2216AA12556BBAA000277A9 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B2216AA02556BBAA000277A9 /* Info.plist */; };
-		B2216AA32556BBB6000277A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2216AA22556BBB6000277A9 /* Main.storyboard */; };
+		B2D79A9C2556C6BA00C97F72 /* TodayViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B2216A9E2556BB44000277A9 /* TodayViewController.swift */; };
+		B2D79A9E2556C85700C97F72 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B2216AA22556BBB6000277A9 /* Main.storyboard */; };
 		CDA50DE0242C7D330055BE4A /* CSV in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 115186B3241FB00000EBC83E /* CSV */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CDA50DE2242C7D350055BE4A /* Disk in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 115186B0241FAFF300EBC83E /* Disk */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		CDA50DE3242C7D3C0055BE4A /* CSV in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 115186B7241FB04200EBC83E /* CSV */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -624,8 +623,6 @@
 				1186BC642429FCF800097E9E /* LaunchScreen.storyboard in Resources */,
 				117C84DA2427E3E200688459 /* Localizable.strings in Resources */,
 				1162D135240D05FA00647002 /* Assets.xcassets in Resources */,
-				B2216AA32556BBB6000277A9 /* Main.storyboard in Resources */,
-				B2216AA12556BBAA000277A9 /* Info.plist in Resources */,
 				1186BC652429FCF800097E9E /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -634,6 +631,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2D79A9E2556C85700C97F72 /* Main.storyboard in Resources */,
 				117C84DB2427E3E200688459 /* Localizable.strings in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -665,7 +663,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B2216A9F2556BB44000277A9 /* TodayViewController.swift in Sources */,
 				111C76B62412C90500368F08 /* SystemColor.swift in Sources */,
 				115186AA241FAFCE00EBC83E /* JHUWebDataService.swift in Sources */,
 				115186A9241FAFCE00EBC83E /* DataService.swift in Sources */,
@@ -730,6 +727,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2D79A9C2556C6BA00C97F72 /* TodayViewController.swift in Sources */,
 				115186AC241FAFCE00EBC83E /* DataService.swift in Sources */,
 				115186AE241FAFCE00EBC83E /* JHURepoDataService.swift in Sources */,
 				117C84EB2428119600688459 /* Strings.swift in Sources */,
