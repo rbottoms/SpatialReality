@@ -30,7 +30,7 @@ class DataSourceCell: RegionDataCell {
 	}
 
 	@IBAction private func buttonBingTapped(_ sender: Any) {
-		let url = URL(string: "https://bing.com/covid/")!
+		let url = URL(string: "https://intelligentmessenger.com")!
 		presentSafariViewController(with: url)
 	}
 
@@ -45,7 +45,7 @@ class DataSourceCell: RegionDataCell {
 	}
 
 	@IBAction private func buttonContributorsTapped(_ sender: Any) {
-		let url = URL(string: "https://github.com/mhdhejazi/CoronaTracker#credits")!
+		let url = URL(string: "https://github.com/rbottoms/SpatialReality#credits")!
 		presentSafariViewController(with: url)
 	}
 }
