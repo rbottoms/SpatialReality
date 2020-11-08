@@ -21,7 +21,7 @@ class TopChartView: BaseBarChartView {
 	override var shareableText: String? { L10n.Chart.topCountries }
 
 	override var supportedModes: [Statistic.Kind] {
-		[.confirmed, .recovered, .deaths]
+		[.confirmed, .active, .recovered, .deaths]
 	}
 
 	override var extraMenuItems: [MenuItem] {
@@ -33,7 +33,7 @@ class TopChartView: BaseBarChartView {
 	var isLogarithmic = false {
 		didSet {
 			self.chartView.clear()
-			self.update(region: nil, animated: true)
+			self.update(region: region, animated: true)
 		}
 	}
 
@@ -48,10 +48,7 @@ class TopChartView: BaseBarChartView {
 			return region.localizedName.replacingOccurrences(of: " ", with: "\n")
 		})
 
-		/// Rotate labels in other languages
-		if !Locale.current.isEnglish {
-			chartView.xAxis.labelRotationAngle = 45
-		}
+		chartView.xAxis.labelRotationAngle = 35
 
 		chartView.leftAxis.valueFormatter = DefaultAxisValueFormatter { value, _ in
 			self.isLogarithmic ? pow(10, value).kmFormatted : value.kmFormatted
@@ -84,18 +81,30 @@ class TopChartView: BaseBarChartView {
 	override func update(region: Region?, animated: Bool) {
 		super.update(region: region, animated: animated)
 
-		let regions = DataManager.instance.topCountries
+		var regions: [Region] = []
+		var title: String = ""
+		var colors: [UIColor] = []
 
-		title = L10n.Chart.topCountries + (mode == .confirmed ? "" : " (\(mode))")
+		if region?.isWorld != true, let subRegions = region?.subRegions {
+			regions = [Region](subRegions.lazy.sorted().reversed().prefix(6))
+			title = L10n.Chart.topRegions
+			colors = self.colors.reversed()
+		}
+
+		if regions.count < 2 {
+			regions = DataManager.shared.topCountries
+			title = L10n.Chart.topCountries
+			colors = self.colors
+		}
+
+		self.title = title + (mode == .confirmed ? "" : " (\(mode))")
 
 		var entries = [BarChartDataEntry]()
 		for index in regions.indices {
 			let region = regions[index]
-			var value = Double(region.report?.stat.number(for: mode) ?? 0)
-			if isLogarithmic {
-				value = log10(value)
-			}
-			let entry = BarChartDataEntry(x: Double(index), y: value)
+			let value = Double(region.report?.stat.number(for: mode) ?? 0)
+			let scaledValue = isLogarithmic ? log10(value) : value
+			let entry = BarChartDataEntry(x: Double(index), y: scaledValue)
 			entry.data = region
 			entries.append(entry)
 		}
@@ -120,10 +129,12 @@ class TopChartView: BaseBarChartView {
 			chartView.leftAxis.resetCustomAxisMax()
 		}
 
+		chartView.xAxis.setLabelCount(entries.count, force: false)
+
 		chartView.data = BarChartData(dataSet: dataSet)
 
 		if animated {
-			chartView.animate(yAxisDuration: 2, easingOption: .easeOutCubic)
+			chartView.animate(yAxisDuration: 0.5, easingOption: .easeOutQuad)
 		}
 	}
 }

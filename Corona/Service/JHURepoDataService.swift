@@ -16,7 +16,7 @@ public class JHURepoDataService: DataService {
 		case downloadError
 	}
 
-	static let instance = JHURepoDataService()
+	static let shared = JHURepoDataService()
 
 	private static let maxOldDataAge = 10 // Days
 	private static let baseURL = URL(string: "https://github.com/CSSEGISandData/COVID-19/raw/master/csse_covid_19_data/")!
@@ -49,16 +49,16 @@ public class JHURepoDataService: DataService {
 		formatter.dateFormat = "MM-dd-YYYY"
 		let fileName = formatter.string(from: date)
 
-		print("Downloading \(fileName)")
+		print("Downloading", fileName)
 		let url = URL(string: String(format: Self.dailyReportURLString, fileName), relativeTo: Self.baseURL)!
 
-		_ = URLSession.shared.dataTask(with: url) { data, response, _ in
+		URLSession.shared.dataTask(with: url) { data, response, _ in
 
 			guard let response = response as? HTTPURLResponse,
 				response.statusCode == 200,
 				let data = data else {
 
-					print("Failed downloading \(fileName)")
+					print("Failed downloading", fileName)
 					self.downloadDailyReport(date: date.yesterday, completion: completion)
 					return
 			}
@@ -71,7 +71,7 @@ public class JHURepoDataService: DataService {
 					return
 				}
 
-				print("Download success \(fileName)")
+				print("Download success", fileName)
 				self.lastReportsDataHash = dataHash
 
 				self.parseReports(data: data, completion: completion)
@@ -82,10 +82,10 @@ public class JHURepoDataService: DataService {
 	private func parseReports(data: Data, completion: @escaping FetchResultBlock) {
 		do {
 			let reader = try CSVReader(string: String(data: data, encoding: .utf8)!, hasHeaderRow: true)
-			let regions = reader.map({ Region.createFromReportData(dataRow: $0) })
+			let regions = reader.map(Region.createFromReportData)
 			completion(regions, nil)
 		} catch {
-			print("Unexpected error: \(error).")
+			debugPrint("Unexpected error:", error)
 			completion(nil, error)
 		}
 	}
@@ -150,6 +150,7 @@ public class JHURepoDataService: DataService {
 		dateFormatter.dateFormat = "M/d/yy"
 
 		let dateStrings = headers.dropFirst(4)
+		let dateValues = dateStrings.map { dateFormatter.date(from: $0) }
 
 		var regions: [Region] = []
 		for confirmedTimeSeries in confirmed {
@@ -158,8 +159,7 @@ public class JHURepoDataService: DataService {
 
 			var series: [Date: Statistic] = [:]
 			for column in confirmedTimeSeries.values.indices {
-				let dateString = dateStrings[dateStrings.startIndex + column]
-				if let date = dateFormatter.date(from: dateString) {
+				if let date = dateValues[dateValues.startIndex + column] {
 					var recoveredCount = 0
 					if let recoveredTimeSeries = recoveredTimeSeries {
 						recoveredCount = recoveredTimeSeries.values[min(column, recoveredTimeSeries.values.count - 1)]
@@ -190,30 +190,30 @@ public class JHURepoDataService: DataService {
 		do {
 			let reader = try CSVReader(string: String(data: data, encoding: .utf8)!, hasHeaderRow: true)
 			let headers = reader.headerRow
-			let result = reader.map({ CounterTimeSeries(dataRow: $0) })
+			let result = reader.map(CounterTimeSeries.init)
 
 			return (result, headers ?? [])
 		} catch {
-			print("Unexpected error: \(error).")
+			debugPrint("Unexpected error:", error)
 			return nil
 		}
 	}
 
 	private func downloadFile(url: URL, completion: @escaping (Data?) -> Void) {
 		let fileName = url.lastPathComponent
-		print("Downloading \(fileName)")
-		_ = URLSession.shared.dataTask(with: url) { (data, response, _) in
+		print("Downloading", fileName)
+		URLSession.shared.dataTask(with: url) { (data, response, _) in
 			guard let response = response as? HTTPURLResponse,
 				response.statusCode == 200,
 				let data = data else {
 
-					print("Failed downloading \(fileName)")
+					print("Failed downloading", fileName)
 					completion(nil)
 					return
 			}
 
 			DispatchQueue.global().async {
-				print("Download success \(fileName)")
+				print("Download success", fileName)
 
 				completion(data)
 			}

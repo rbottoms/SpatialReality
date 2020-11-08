@@ -8,7 +8,7 @@ import UIKit
 
 @available(iOS 13.0, *)
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
-	private var toolbar: MainToolbar?
+	private var toolbar: AppToolbar?
 
 	var window: UIWindow?
 
@@ -16,7 +16,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 			   options connectionOptions: UIScene.ConnectionOptions) {
 		guard let windowScene = (scene as? UIWindowScene) else { return }
 
-		toolbar = MainToolbar(windowScene: windowScene)
+		toolbar = AppToolbar(windowScene: windowScene)
+
+		if let urlContext = connectionOptions.urlContexts.first {
+			handleOpenUrl(urlContext.url)
+		}
 	}
 
 	func sceneDidDisconnect(_ scene: UIScene) {
@@ -29,11 +33,38 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 	}
 
 	func sceneWillEnterForeground(_ scene: UIScene) {
-		if !DataManager.instance.world.subRegions.isEmpty {
-			MapController.instance.downloadIfNeeded()
+		if !DataManager.shared.world.subRegions.isEmpty {
+			MapController.shared.downloadIfNeeded()
 		}
 	}
 
 	func sceneDidEnterBackground(_ scene: UIScene) {
+	}
+
+	func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+		guard let deepLinkUrl = URLContexts.first?.url else { return }
+
+		handleOpenUrl(deepLinkUrl)
+	}
+
+	@discardableResult
+	private func handleOpenUrl(_ url: URL) -> Bool {
+		guard url.host == "ios_14_widget",
+			  url.path == "/open",
+			  let regionCode = url.queryParameters?["region"] else { return false }
+
+		/// If it's a cold run we just store the target region in MapController
+		if MapController.shared == nil {
+			MapController.initialRegionCode = regionCode
+			return true
+		}
+
+		let worldRegion = DataManager.shared.world
+		let selectedRegion = worldRegion.subRegions.first(where: { $0.isoCode == regionCode }) ?? worldRegion
+		if selectedRegion.isCountry {
+			MapController.shared.showRegionOnMap(region: selectedRegion)
+		}
+
+		return true
 	}
 }

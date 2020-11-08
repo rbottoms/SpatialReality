@@ -12,12 +12,19 @@ import FloatingPanel
 class MapController: UIViewController {
 	private static let updateInterval: TimeInterval = 60 * 5 /// 5 mins
 
-	static var instance: MapController!
+	static var shared: MapController!
+	static var initialRegionCode: String?
 
-	private var cityZoomLevel: CGFloat { (view.bounds.width > 1_000) ? 5 : 4 }
+	@IBOutlet private var mapView: MKMapView!
+	@IBOutlet private var effectView: UIVisualEffectView!
+	@IBOutlet private var buttonUpdate: UIButton!
+	@IBOutlet private var viewOptions: UIView!
+	@IBOutlet private var effectViewOptions: UIVisualEffectView!
+	@IBOutlet private var buttonMode: UIButton!
+
+	private var cityZoomLevel: CGFloat { 5 }
 	private var allAnnotations: [RegionAnnotation] = []
-	private var countryAnnotations: [RegionAnnotation] = []
-	private var currentAnnotations: [RegionAnnotation] = []
+	private var currentRegion: Region?
 
 	private var panelController: FloatingPanelController!
 	private var regionPanelController: RegionPanelController!
@@ -28,22 +35,20 @@ class MapController: UIViewController {
 		}
 	}
 
-	@IBOutlet private var mapView: MKMapView!
-	@IBOutlet private var effectView: UIVisualEffectView!
-	@IBOutlet private var buttonUpdate: UIButton!
-	@IBOutlet private var viewOptions: UIView!
-	@IBOutlet private var effectViewOptions: UIVisualEffectView!
-	@IBOutlet private var buttonMode: UIButton!
-
 	override func viewDidLoad() {
 		super.viewDidLoad()
 
-		MapController.instance = self
+		MapController.shared = self
 
 		initializeView()
 		initializeBottomSheet()
 
-		DataManager.instance.load { _ in
+		DataManager.shared.load { _ in
+			if let regionCode = Self.initialRegionCode,
+			   let initialRegion = DataManager.shared.world.subRegions.first(where: { $0.isoCode == regionCode }) {
+				self.currentRegion = initialRegion
+			}
+
 			self.update()
 			self.downloadIfNeeded()
 		}
@@ -117,6 +122,7 @@ class MapController: UIViewController {
 	}
 
 	func updateRegionScreen(region: Region?) {
+		currentRegion = region
 		regionPanelController.regionDataController.region = region
 		regionPanelController.regionDataController.update()
 	}
@@ -139,7 +145,11 @@ class MapController: UIViewController {
 	}
 
 	func selectAnnotation(for region: Region, onlyIfVisible: Bool = false) {
-		guard let annotation = self.currentAnnotations.first(where: { $0.region == region }) else { return }
+		guard let annotation = mapView.annotations.first(where: { annotation in
+			(annotation as? RegionAnnotation)?.region == region
+		}) else {
+			return
+		}
 
 		if onlyIfVisible, !mapView.visibleMapRect.contains(MKMapPoint(annotation.coordinate)) {
 			return
@@ -149,22 +159,22 @@ class MapController: UIViewController {
 	}
 
 	private func update() {
-		allAnnotations = DataManager.instance.regions(of: .province)
-			.filter({ $0.report?.stat.number(for: mode) ?? 0 > 0 })
-			.map({ RegionAnnotation(region: $0, mode: mode) })
+		allAnnotations = DataManager.shared.allRegions()
+			.filter { $0.report?.stat.number(for: mode) ?? 0 > 0 }
+			.map { RegionAnnotation(region: $0, mode: mode) }
 
-		countryAnnotations = DataManager.instance.regions(of: .country)
-			.filter({ $0.report?.stat.number(for: mode) ?? 0 > 0 })
-			.map({ RegionAnnotation(region: $0, mode: mode) })
+		let currentAnnotations = allAnnotations.filter { annotation in
+			annotation.region.isCountry || mapView.zoomLevel > cityZoomLevel
+		}
 
-		currentAnnotations = mapView.zoomLevel > cityZoomLevel ? allAnnotations : countryAnnotations
+		let currentRegion = self.currentRegion
 
 		mapView.superview?.transition {
 			self.mapView.removeAnnotations(self.mapView.annotations)
-			self.mapView.addAnnotations(self.currentAnnotations)
+			self.mapView.addAnnotations(currentAnnotations)
 		}
 
-		regionPanelController.regionDataController.region = nil
+		regionPanelController.regionDataController.region = currentRegion
 		regionPanelController.regionDataController.update()
 	}
 
@@ -175,7 +185,7 @@ class MapController: UIViewController {
 		}
 		regionPanelController.isUpdating = true
 
-		DataManager.instance.download { success in
+		DataManager.shared.download { success in
 			DispatchQueue.main.async {
 				self.regionPanelController.isUpdating = false
 
@@ -276,7 +286,7 @@ extension MapController: MKMapViewDelegate {
 	}
 
 	func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
-		for annotation in currentAnnotations {
+		for annotation in allAnnotations {
 			if let view = mapView.view(for: annotation) as? RegionAnnotationView {
 				view.mapZoomLevel = mapView.zoomLevel
 			}
@@ -284,30 +294,14 @@ extension MapController: MKMapViewDelegate {
 	}
 
 	func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-		var annotationToSelect: MKAnnotation?
-
 		if mapView.zoomLevel > cityZoomLevel {
-			if currentAnnotations.count != allAnnotations.count {
-				mapView.superview?.transition {
-					annotationToSelect = mapView.selectedAnnotations.first
-					mapView.removeAnnotations(mapView.annotations)
-					self.currentAnnotations = self.allAnnotations
-					mapView.addAnnotations(self.currentAnnotations)
-				}
+			if mapView.annotations.count != allAnnotations.count {
+				mapView.addAnnotations(self.allAnnotations.filter { !$0.region.isCountry })
 			}
 		} else {
-			if currentAnnotations.count != countryAnnotations.count {
-				mapView.superview?.transition {
-					annotationToSelect = mapView.selectedAnnotations.first
-					mapView.removeAnnotations(mapView.annotations)
-					self.currentAnnotations = self.countryAnnotations
-					mapView.addAnnotations(self.currentAnnotations)
-				}
+			if mapView.annotations.count == allAnnotations.count {
+				mapView.removeAnnotations(self.allAnnotations.filter { !$0.region.isCountry })
 			}
-		}
-
-		if let region = (annotationToSelect as? RegionAnnotation)?.region {
-			selectAnnotation(for: region, onlyIfVisible: true)
 		}
 	}
 

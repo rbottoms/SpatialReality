@@ -11,7 +11,7 @@ import Charts
 class TrendlineChartView: BaseLineChartView {
 	private static let maxItems = 6
 
-	private var colors: [UIColor] { defaultColors }
+	private var colors: [UIColor] = []
 
 	private lazy var legendStack: UIStackView = {
 		let stackView = UIStackView(arrangedSubviews: (1...Self.maxItems).map { _ in
@@ -34,7 +34,7 @@ class TrendlineChartView: BaseLineChartView {
 		})
 		stackView.distribution = .fillProportionally
 		stackView.alignment = .top
-		stackView.spacing = 8
+		stackView.spacing = 4
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 
 		self.addSubview(stackView)
@@ -54,8 +54,12 @@ class TrendlineChartView: BaseLineChartView {
 				for index in dataSets.indices {
 					let dataSet = dataSets[index]
 					var color = colors[index % colors.count]
+					let stack = legendStack.arrangedSubviews[index]
+
+					stack.alpha = 1
 					if selectedIndex > -1 && selectedIndex != index {
 						color = color.withAlphaComponent(0.5)
+						stack.alpha = 0.5
 					}
 					dataSet.lineDashLengths = selectedIndex == index ? nil : [4, 2]
 					dataSet.colors = [color]
@@ -99,11 +103,17 @@ class TrendlineChartView: BaseLineChartView {
 			self.isLogarithmic ? pow(10, value).kmFormatted : value.kmFormatted
 		}
 
-		let simpleMarker = SimpleMarkerView(chartView: chartView)
+		let simpleMarker = SimpleMarkerView(chartView: chartView) { entry, _ in
+			let xValue = self.chartView.xAxis.valueFormatter?.stringForValue(entry.x, axis: nil) ?? "-"
+			if let value = entry.data as? Double {
+				return "\(xValue): \(value.kmFormatted)"
+			} else {
+				return "\(xValue): \(entry.y.kmFormatted)"
+			}
+		}
 		simpleMarker.visibilityCallback = { entry, visible in
 			let index = (entry.data as? Int) ?? -1
 			self.selectedIndex = visible ? index : -1
-			print(index)
 		}
 		simpleMarker.font = .systemFont(ofSize: 13 * fontScale)
 		chartView.marker = simpleMarker
@@ -121,15 +131,25 @@ class TrendlineChartView: BaseLineChartView {
 	override func update(region: Region?, animated: Bool) {
 		super.update(region: region, animated: animated)
 
-		var regions = DataManager.instance.topCountries.filter { $0.timeSeries != nil }
+		var regions: [Region] = []
+
+		if region?.isWorld != true, let subRegions = region?.subRegions {
+			regions = [Region](subRegions.lazy.sorted().reversed().filter { $0.timeSeries != nil }.prefix(6))
+			colors = defaultColors.reversed()
+		}
+
+		if regions.count < 2 {
+			regions = DataManager.shared.topCountries.filter { $0.timeSeries != nil }
+			if let region = region, region.isCountry, !regions.contains(region), region.timeSeries != nil {
+				regions.removeLast()
+				regions.append(region)
+			}
+			colors = defaultColors
+		}
+
 		guard regions.count > 2 else {
 			chartView.data = nil
 			return
-		}
-
-		if let region = region, region.isCountry, !regions.contains(region) {
-			regions.removeLast()
-			regions.append(region)
 		}
 
 		title = (mode == .deaths) ? L10n.Chart.Trendline.deaths : L10n.Chart.trendline
@@ -139,17 +159,23 @@ class TrendlineChartView: BaseLineChartView {
 				.lazy
 				.sorted { $0.key < $1.key }
 				.drop { $0.value.number(for: mode) < (mode == .deaths ? 10 : 100) }
+		}.filter { !$0.isEmpty }
+
+		guard !serieses.isEmpty else {
+			chartView.data = nil
+			return
 		}
-		let totalDays = serieses.map { $0.count }.sorted().dropLast().last! /// Next to the longest (to deal with China case)
+
+		let totalDays = serieses.map { $0.count }.sorted().last!
 		let entries = zip(serieses.indices, serieses).map { (regionIndex, series) in
 			zip(series.indices.prefix(totalDays), series).map { (index, pair) -> ChartDataEntry in
-				var value = Double(pair.value.number(for: mode))
-				if isLogarithmic {
-					value = log10(value)
-				}
-				return ChartDataEntry(x: Double(index - series.startIndex),
-									  y: value,
-									  data: regionIndex)
+				let value = Double(pair.value.number(for: mode))
+				let scaledValue = isLogarithmic ? log10(value) : value
+				let entry = ChartDataEntry(x: Double(index - series.startIndex),
+										   y: scaledValue,
+										   data: regionIndex)
+				entry.data = value
+				return entry
 			}
 		}
 		let labels = regions.map { $0.localizedName }
@@ -194,13 +220,15 @@ class TrendlineChartView: BaseLineChartView {
 		chartView.data = LineChartData(dataSets: dataSets)
 
 		if animated {
-			chartView.animate(xAxisDuration: 2, easingOption: .linear)
+			chartView.animate(xAxisDuration: 0.5, easingOption: .easeOutQuad)
 		}
 	}
 
 	private func updateLegend(regions: [Region]) {
+		legendStack.arrangedSubviews.forEach { $0.isHidden = true }
 		zip(regions, legendStack.arrangedSubviews).forEach { (region, view) in
 			if let stack = view as? UIStackView, let colorIndex = regions.firstIndex(of: region) {
+				stack.isHidden = false
 				(stack.arrangedSubviews.first as? UILabel)?.textColor = colors[colorIndex % colors.count]
 				(stack.arrangedSubviews.last as? UILabel)?.text = region.localizedName.replacingOccurrences(of: " ", with: "\n")
 			}
@@ -210,6 +238,8 @@ class TrendlineChartView: BaseLineChartView {
 		legendStack.setNeedsLayout()
 		chartView.extraBottomOffset = legendStack.bounds.height + 10
 	}
+
+	// MARK: - Actions
 
 	@objc
 	func legendTapped(_ recognizer: UITapGestureRecognizer) {

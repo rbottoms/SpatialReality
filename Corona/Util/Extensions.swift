@@ -10,31 +10,46 @@ import MapKit
 
 extension CLLocationCoordinate2D {
 	public var location: CLLocation {
-		return CLLocation(latitude: latitude, longitude: longitude)
+		CLLocation(latitude: latitude, longitude: longitude)
 	}
 
 	public func distance(from coordinate: CLLocationCoordinate2D) -> CLLocationDistance {
-		return location.distance(from: coordinate.location)
+		location.distance(from: coordinate.location)
 	}
+}
+
+extension CLPlacemark {
+	var iso3CountryCode: String? { Locale.iso3Code(for: isoCountryCode ?? "") }
 }
 
 extension Locale {
 	public static let posix = Locale(identifier: "en_US_POSIX")
 
-	static func isoCode(from englishCountryName: String) -> String? {
+	// swiftlint:disable:next line_length
+	private static let iso2ToISO3: [String: String] = ["AF": "AFG", "AX": "ALA", "AL": "ALB", "DZ": "DZA", "AS": "ASM", "AD": "AND", "AO": "AGO", "AI": "AIA", "AQ": "ATA", "AG": "ATG", "AR": "ARG", "AM": "ARM", "AW": "ABW", "AU": "AUS", "AT": "AUT", "AZ": "AZE", "BS": "BHS", "BH": "BHR", "BD": "BGD", "BB": "BRB", "BY": "BLR", "BE": "BEL", "BZ": "BLZ", "BJ": "BEN", "BM": "BMU", "BT": "BTN", "BO": "BOL", "BQ": "BES", "BA": "BIH", "BW": "BWA", "BV": "BVT", "BR": "BRA", "IO": "IOT", "BN": "BRN", "BG": "BGR", "BF": "BFA", "BI": "BDI", "CV": "CPV", "KH": "KHM", "CM": "CMR", "CA": "CAN", "KY": "CYM", "CF": "CAF", "TD": "TCD", "CL": "CHL", "CN": "CHN", "CX": "CXR", "CC": "CCK", "CO": "COL", "KM": "COM", "CG": "COG", "CD": "COD", "CK": "COK", "CR": "CRI", "CI": "CIV", "HR": "HRV", "CU": "CUB", "CW": "CUW", "CY": "CYP", "CZ": "CZE", "DK": "DNK", "DJ": "DJI", "DM": "DMA", "DO": "DOM", "EC": "ECU", "EG": "EGY", "SV": "SLV", "GQ": "GNQ", "ER": "ERI", "EE": "EST", "SZ": "SWZ", "ET": "ETH", "FK": "FLK", "FO": "FRO", "FJ": "FJI", "FI": "FIN", "FR": "FRA", "GF": "GUF", "PF": "PYF", "TF": "ATF", "GA": "GAB", "GM": "GMB", "GE": "GEO", "DE": "DEU", "GH": "GHA", "GI": "GIB", "GR": "GRC", "GL": "GRL", "GD": "GRD", "GP": "GLP", "GU": "GUM", "GT": "GTM", "GG": "GGY", "GN": "GIN", "GW": "GNB", "GY": "GUY", "HT": "HTI", "HM": "HMD", "VA": "VAT", "HN": "HND", "HK": "HKG", "HU": "HUN", "IS": "ISL", "IN": "IND", "ID": "IDN", "IR": "IRN", "IQ": "IRQ", "IE": "IRL", "IM": "IMN", "IL": "ISR", "IT": "ITA", "JM": "JAM", "JP": "JPN", "JE": "JEY", "JO": "JOR", "KZ": "KAZ", "KE": "KEN", "KI": "KIR", "KP": "PRK", "KR": "KOR", "KW": "KWT", "KG": "KGZ", "LA": "LAO", "LV": "LVA", "LB": "LBN", "LS": "LSO", "LR": "LBR", "LY": "LBY", "LI": "LIE", "LT": "LTU", "LU": "LUX", "MO": "MAC", "MK": "MKD", "MG": "MDG", "MW": "MWI", "MY": "MYS", "MV": "MDV", "ML": "MLI", "MT": "MLT", "MH": "MHL", "MQ": "MTQ", "MR": "MRT", "MU": "MUS", "YT": "MYT", "MX": "MEX", "FM": "FSM", "MD": "MDA", "MC": "MCO", "MN": "MNG", "ME": "MNE", "MS": "MSR", "MA": "MAR", "MZ": "MOZ", "MM": "MMR", "NA": "NAM", "NR": "NRU", "NP": "NPL", "NL": "NLD", "NC": "NCL", "NZ": "NZL", "NI": "NIC", "NE": "NER", "NG": "NGA", "NU": "NIU", "NF": "NFK", "MP": "MNP", "NO": "NOR", "OM": "OMN", "PK": "PAK", "PW": "PLW", "PS": "PSE", "PA": "PAN", "PG": "PNG", "PY": "PRY", "PE": "PER", "PH": "PHL", "PN": "PCN", "PL": "POL", "PT": "PRT", "PR": "PRI", "QA": "QAT", "RE": "REU", "RO": "ROU", "RU": "RUS", "RW": "RWA", "BL": "BLM", "SH": "SHN", "KN": "KNA", "LC": "LCA", "MF": "MAF", "PM": "SPM", "VC": "VCT", "WS": "WSM", "SM": "SMR", "ST": "STP", "SA": "SAU", "SN": "SEN", "RS": "SRB", "SC": "SYC", "SL": "SLE", "SG": "SGP", "SX": "SXM", "SK": "SVK", "SI": "SVN", "SB": "SLB", "SO": "SOM", "ZA": "ZAF", "GS": "SGS", "SS": "SSD", "ES": "ESP", "LK": "LKA", "SD": "SDN", "SR": "SUR", "SJ": "SJM", "SE": "SWE", "CH": "CHE", "SY": "SYR", "TW": "TWN", "TJ": "TJK", "TZ": "TZA", "TH": "THA", "TL": "TLS", "TG": "TGO", "TK": "TKL", "TO": "TON", "TT": "TTO", "TN": "TUN", "TR": "TUR", "TM": "TKM", "TC": "TCA", "TV": "TUV", "UG": "UGA", "UA": "UKR", "AE": "ARE", "GB": "GBR", "US": "USA", "UM": "UMI", "UY": "URY", "UZ": "UZB", "VU": "VUT", "VE": "VEN", "VN": "VNM", "VG": "VGB", "VI": "VIR", "WF": "WLF", "EH": "ESH", "YE": "YEM", "ZM": "ZMB", "ZW": "ZWE"]
+
+	static func iso3Code(for iso2Code: String) -> String? {
+		iso2ToISO3[iso2Code]
+	}
+
+	static func isoCode(for englishCountryName: String) -> String? {
 		if let pair = YAMLFiles.isoCountryNames
 			.compactMapValues({ $0 as? [String] })
 			.first(where: { $0.value.contains(englishCountryName) }) {
-			return pair.key
+			return iso2ToISO3[pair.key]
 		}
 
-		return Locale.isoRegionCodes.first { code in
+		if let regionCode = Locale.isoRegionCodes.first(where: { code in
 			code == englishCountryName || posix.localizedString(forRegionCode: code) == englishCountryName
+		}) {
+			return iso2ToISO3[regionCode]
 		}
+
+		return nil
 	}
 
 	static func translateCountryName(_ englishCountryName: String) -> String? {
-		guard let code = isoCode(from: englishCountryName) else { return englishCountryName }
+		guard let code = isoCode(for: englishCountryName) else { return englishCountryName }
 		return Locale.current.localizedString(forRegionCode: code)
 	}
 
@@ -131,6 +146,8 @@ extension Double {
 	public var percentFormatted: String {
 		NumberFormatter.percentFormatter.string(from: NSNumber(value: self))!
 	}
+
+	public var radians: Double { self * Double.pi / 180 }
 }
 
 extension Int {
@@ -141,6 +158,8 @@ extension Int {
 	public var groupingFormatted: String {
 		NumberFormatter.groupingFormatter.string(from: NSNumber(value: self))!
 	}
+
+	public var radians: Double { Double(self).radians }
 
 	public static func random() -> Int { random(in: 1..<max) }
 }
@@ -173,7 +192,7 @@ extension FileManager {
 }
 
 extension String {
-	func md5Hash() -> String? {
+	func sha1Hash() -> String? {
 		guard let data = self.data(using: .utf8) else { return nil }
 		return data.sha1Hash()
 	}
@@ -181,16 +200,9 @@ extension String {
 
 extension Data {
 	func sha1Hash() -> String {
-		let length = Int(CC_SHA1_DIGEST_LENGTH)
-		var digest = [UInt8](repeating: 0, count: length)
-
-		_ = self.withUnsafeBytes { body in
-			CC_SHA1(body.baseAddress, CC_LONG(self.count), &digest)
-		}
-
-		return (0..<length).reduce("") {
-			$0 + String(format: "%02x", digest[$1])
-		}
+		var digest = [UInt8](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
+		_ = withUnsafeBytes { CC_SHA1($0.baseAddress, CC_LONG(self.count), &digest) }
+		return digest.map { String(format: "%02x", $0) }.joined()
 	}
 }
 
@@ -198,4 +210,25 @@ extension Bundle {
 	var name: String? { infoDictionary?["CFBundleName"] as? String }
 
 	var version: String? { infoDictionary?["CFBundleVersion"] as? String }
+}
+
+extension Collection {
+	func sum(_ transform: (Self.Element) throws -> Int) rethrows -> Int {
+		try reduce(0) { $0 + (try transform($1)) }
+	}
+
+	func sum(_ transform: (Self.Element) throws -> CGFloat) rethrows -> CGFloat {
+		try reduce(0) { $0 + (try transform($1)) }
+	}
+}
+
+extension URL {
+	public var queryParameters: [String: String]? {
+		guard
+			let components = URLComponents(url: self, resolvingAgainstBaseURL: true),
+			let queryItems = components.queryItems else { return nil }
+		return queryItems.reduce(into: [String: String]()) { (result, item) in
+			result[item.name] = item.value
+		}
+	}
 }

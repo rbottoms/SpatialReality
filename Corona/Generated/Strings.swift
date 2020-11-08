@@ -13,6 +13,8 @@ import Foundation
 internal enum L10n {
 
   internal enum App {
+    /// Credits
+    internal static let credits = L10n.tr("Localizable", "app.credits")
     /// Please update from %@
     internal static func newVersionMessage(_ p1: String) -> String {
       return L10n.tr("Localizable", "app.newVersionMessage", p1)
@@ -41,6 +43,8 @@ internal enum L10n {
     internal static let logarithmic = L10n.tr("Localizable", "chart.logarithmic")
     /// Most Affected Countries
     internal static let topCountries = L10n.tr("Localizable", "chart.topCountries")
+    /// Most Affected Regions
+    internal static let topRegions = L10n.tr("Localizable", "chart.topRegions")
     /// Confirmed cases since 100th case
     internal static let trendline = L10n.tr("Localizable", "chart.trendline")
     internal enum Axis {
@@ -81,6 +85,10 @@ internal enum L10n {
   internal enum Menu {
     /// Copy
     internal static let copy = L10n.tr("Localizable", "menu.copy")
+    /// Release Notes
+    internal static let releaseNotes = L10n.tr("Localizable", "menu.releaseNotes")
+    /// Report an Issue
+    internal static let reportIssue = L10n.tr("Localizable", "menu.reportIssue")
     /// Search
     internal static let search = L10n.tr("Localizable", "menu.search")
     /// Share

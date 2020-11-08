@@ -32,7 +32,7 @@ class RegionListController: UITableViewController {
 extension RegionListController: UIGestureRecognizerDelegate {
 	@objc
 	func tableViewPanned(_ sender: Any) {
-		MapController.instance.view.endEditing(false)
+		MapController.shared.view.endEditing(false)
 	}
 
 	func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer,
@@ -43,11 +43,11 @@ extension RegionListController: UIGestureRecognizerDelegate {
 
 extension RegionListController {
 	override func numberOfSections(in tableView: UITableView) -> Int {
-		return 1
+		1
 	}
 
 	override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-		return regions.count
+		regions.count
 	}
 
 	override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -62,15 +62,15 @@ extension RegionListController {
 }
 
 class RegionCell: UITableViewCell {
+	@IBOutlet private var labelName: UILabel!
+	@IBOutlet private var labelStats: UILabel!
+
 	var region: Region? {
 		didSet {
 			labelName.text = region?.localizedLongName
 			labelStats.text = region?.report?.stat.confirmedCountString
 		}
 	}
-
-	@IBOutlet private var labelName: UILabel!
-	@IBOutlet private var labelStats: UILabel!
 
 	override func awakeFromNib() {
 		super.awakeFromNib()

@@ -7,8 +7,6 @@
 import UIKit
 
 class ChartController: UIViewController {
-	private var chartView: RegionChartView!
-
 	@IBOutlet private var effectViewBackground: UIVisualEffectView!
 	@IBOutlet private var effectViewHeader: UIVisualEffectView!
 	@IBOutlet private var labelTitle: UILabel!
@@ -16,10 +14,13 @@ class ChartController: UIViewController {
 	@IBOutlet private var imageLogo: UIImageView!
 	@IBOutlet private var chartViewContainer: UIView!
 
+	private var chartView: RegionChartView!
+	private var contextMenu: ContextMenu?
+
 	var sourceChartView: RegionChartView!
 
 	override var keyCommands: [UIKeyCommand]? {
-		return [UIKeyCommand(input: UIKeyCommand.inputEscape,
+		[UIKeyCommand(input: UIKeyCommand.inputEscape,
 							 modifierFlags: [],
 							 action: #selector(doneButtonTapped(_:)))]
 	}
@@ -43,7 +44,7 @@ class ChartController: UIViewController {
 		chartViewContainer.addSubview(chartView)
 		chartView.snapEdgesToSuperview()
 		chartView.interactive = true
-		chartView.shareAction = share
+		chartView.shareAction = shareImage
 		chartView.updateOptions(from: sourceChartView)
 		chartView.update(region: sourceChartView.region, animated: true)
 
@@ -59,9 +60,11 @@ class ChartController: UIViewController {
 			effectViewBackground.effect = UIBlurEffect(style: .systemMaterial)
 			effectViewHeader.effect = UIBlurEffect(style: .systemMaterial)
 		}
+
+		contextMenu = ContextMenu(view: view, menuBuilder: self)
 	}
 
-	private func share() {
+	private func createShareImage() -> UIImage? {
 		var image: UIImage?
 		chartView.prepareForShare {
 			image = self.view.snapshot()
@@ -75,14 +78,41 @@ class ChartController: UIViewController {
 			image?.draw(at: .zero)
 		}
 
-		ShareManager.instance.share(image: image,
+		return image
+	}
+
+	private func shareImage() {
+		ShareManager.shared.share(image: createShareImage(),
 									text: chartView.shareableText,
 									sourceView: self.view)
+	}
+
+	private func copyImage() {
+		UIPasteboard.general.image = createShareImage()
 	}
 
 	// MARK: - Actions
 
 	@IBAction private func doneButtonTapped(_ sender: Any) {
 		dismiss(animated: true)
+	}
+}
+
+@available(iOS 13.0, *)
+extension ChartController: ContextMenuBuilder {
+	func buildContextMenu() -> UIMenu? {
+		var actions = chartView.contextMenuActions
+
+		#if targetEnvironment(macCatalyst)
+		actions.append(UIMenu(title: "", options: .displayInline, children: [
+			UIAction(title: L10n.Menu.copy) { _ in self.copyImage() }
+		]))
+		#endif
+
+		actions.append(UIAction(title: L10n.Menu.share, image: Asset.share.image) { _ in
+			self.shareImage()
+		})
+
+		return UIMenu(title: "", children: actions)
 	}
 }

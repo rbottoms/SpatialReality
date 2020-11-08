@@ -7,6 +7,15 @@
 import UIKit
 
 class RegionPanelController: UIViewController {
+	@IBOutlet private var effectViewBackground: UIVisualEffectView!
+	@IBOutlet private var effectViewHeader: UIVisualEffectView!
+	@IBOutlet private var viewHeader: UIView!
+	@IBOutlet private var labelTitle: UILabel!
+	@IBOutlet private var labelUpdated: UILabel!
+	@IBOutlet private var buttonMenu: UIButton!
+	@IBOutlet private var buttonSearch: UIButton!
+	@IBOutlet private var searchBar: UISearchBar!
+
 	private lazy var buttonDone: UIButton = {
 		let button = UIButton(type: .system)
 		button.titleLabel?.font = .boldSystemFont(ofSize: 17)
@@ -39,10 +48,10 @@ class RegionPanelController: UIViewController {
 				self.regionDataController.view.isHidden = self.isSearching
 
 				if self.isSearching {
-					self.regionListController.regions = DataManager.instance.allRegions().sorted().reversed()
+					self.regionListController.regions = DataManager.shared.allRegions().sorted().reversed()
 					self.searchBar.text = ""
 					self.searchBar.becomeFirstResponder()
-					MapController.instance.showRegionScreen()
+					MapController.shared.showRegionScreen()
 				} else {
 					self.regionListController.regions = []
 					self.searchBar.resignFirstResponder()
@@ -50,15 +59,6 @@ class RegionPanelController: UIViewController {
 			}
 		}
 	}
-
-	@IBOutlet private var effectViewBackground: UIVisualEffectView!
-	@IBOutlet private var effectViewHeader: UIVisualEffectView!
-	@IBOutlet private var viewHeader: UIView!
-	@IBOutlet private var labelTitle: UILabel!
-	@IBOutlet private var labelUpdated: UILabel!
-	@IBOutlet private var buttonMenu: UIButton!
-	@IBOutlet private var buttonSearch: UIButton!
-	@IBOutlet private var searchBar: UISearchBar!
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -147,13 +147,15 @@ extension RegionPanelController {
 	@IBAction private func buttonMenuTapped(_ sender: Any) {
 		Menu.show(above: self, sourceView: buttonMenu, items: [
 			.regular(title: L10n.Menu.update, image: Asset.reload.image) {
-				MapController.instance.downloadIfNeeded()
+				MapController.shared.downloadIfNeeded()
 			},
 			.regular(title: L10n.Menu.share, image: Asset.share.image) {
-				MapController.instance.showShareButtons()
+				MapController.shared.showShareButtons()
 			}
 		])
 	}
+
+	// MARK: - Actions
 
 	@objc
 	func buttonDoneTapped(_ sender: Any) {
@@ -168,13 +170,13 @@ extension RegionPanelController: UISearchBarDelegate, UITableViewDelegate {
 	}
 
 	func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-		var regions: [Region] = DataManager.instance.allRegions().sorted().reversed()
+		var regions: [Region] = DataManager.shared.allRegions().sorted().reversed()
 
 		let query = searchText.trimmingCharacters(in: .whitespacesAndNewlines)
 		if !query.isEmpty {
-			regions = regions.filter({ region in
+			regions = regions.filter { region in
 				region.localizedLongName.range(of: query, options: [.diacriticInsensitive, .caseInsensitive]) != nil
-			})
+			}
 		}
 
 		regionListController.regions = regions
@@ -188,6 +190,6 @@ extension RegionPanelController: UISearchBarDelegate, UITableViewDelegate {
 
 		isSearching = false
 
-		MapController.instance.showRegionOnMap(region: region)
+		MapController.shared.showRegionOnMap(region: region)
 	}
 }
