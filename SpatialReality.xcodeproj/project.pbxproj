@@ -450,7 +450,6 @@
 				11EB2CA224140D24001769B2 /* Controller */,
 				1162D16C240FC56F00647002 /* Main */,
 				1162D16B240FC55F00647002 /* Util */,
-				117C84DE2427E3F200688459 /* Localization */,
 				117C84E52428114C00688459 /* Generated */,
 				117C84F02428D04000688459 /* Resources */,
 				1186BC632429FCF800097E9E /* Main.storyboard */,
@@ -489,6 +488,7 @@
 		1162D16C240FC56F00647002 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				117C84DE2427E3F200688459 /* Localization */,
 				3447B4BC241E7790003914AF /* App.swift */,
 				1162D12B240D05F600647002 /* AppDelegate.swift */,
 				1162D12D240D05F600647002 /* SceneDelegate.swift */,
