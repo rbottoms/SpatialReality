@@ -1,7 +1,7 @@
 //
-//  Corona Tracker
-//  Created by Mhd Hejazi on 3/13/20.
-//  Copyright © 2020 Samabox. All rights reserved.
+//  SpatialReality
+//  Created by Richard Bottoms on 11/07/20.
+//  Copyright © 2020 GlassHand. All rights reserved.
 //
 
 import UIKit
@@ -18,11 +18,13 @@ class App {
 		return topController
 	}
 
-	static let repoURL = URL(string: "https://github.com/mhdhejazi/CoronaTracker")!
-	static let releaseNotesURL = URL(string: "https://github.com/mhdhejazi/CoronaTracker/releases")!
-	static let newIssueURL = URL(string: "https://github.com/mhdhejazi/CoronaTracker/issues/new")!
+    // new mod appupdate
+	static let repoURL = URL(string: "https://github.com/rbottoms/SpatialReality")!
+	static let releaseNotesURL = URL(string: "https://github.com/rbottoms/SpatialReality/releases")!
+	static let newIssueURL = URL(string: "https://github.com/rbottoms/SpatialReality/issues/new")!
 	#if targetEnvironment(macCatalyst)
-	static let updateURL = URL(string: "https://coronatracker.samabox.com/")!
+    //static let updateURL = URL(string: "https://coronatracker.samabox.com/")!
+	static let updateURL = URL(string: "https://spatialreality.intelligentmessenger.com/")!
 	#else
 	static let updateURL = repoURL
 	#endif
@@ -30,7 +32,8 @@ class App {
 	static let version = Bundle.main.version
 
 	public static func checkForAppUpdate(completion: @escaping (_ updateAvailable: Bool) -> Void) {
-		let checkForUpdateURL = URL(string: "https://api.github.com/repos/mhdhejazi/CoronaTracker/releases/latest")!
+        // new mod
+		let checkForUpdateURL = URL(string: "https://api.github.com/repos/rbottoms/SpatialReality/releases/latest")!
 		URLSession.shared.dataTask(with: checkForUpdateURL) { data, response, _ in
 			guard let response = response as? HTTPURLResponse,
 				response.statusCode == 200,
