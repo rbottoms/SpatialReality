@@ -24,7 +24,6 @@
 		1151869F241FAFCA00EBC83E /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11518690241FAECB00EBC83E /* Report.swift */; };
 		115186A0241FAFCA00EBC83E /* TimeSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11518691241FAECB00EBC83E /* TimeSeries.swift */; };
 		115186A1241FAFCA00EBC83E /* Coordinate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11518692241FAECB00EBC83E /* Coordinate.swift */; };
-		115186A2241FAFCA00EBC83E /* Statistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11518693241FAECB00EBC83E /* Statistic.swift */; };
 		115186A3241FAFCA00EBC83E /* Region.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11518694241FAECB00EBC83E /* Region.swift */; };
 		115186A4241FAFCA00EBC83E /* Report.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11518690241FAECB00EBC83E /* Report.swift */; };
 		115186A5241FAFCA00EBC83E /* TimeSeries.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11518691241FAECB00EBC83E /* TimeSeries.swift */; };
@@ -139,6 +138,7 @@
 		6BBBA13C253DFF9C00F09CD8 /* Widget-Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BBBA13A253DFF9800F09CD8 /* Widget-Extensions.swift */; };
 		6BD24B4C253CB8D300F9089A /* StatsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD24B4B253CB8D300F9089A /* StatsView.swift */; };
 		6BD24B4E253CBB9B00F9089A /* LocalStatsSmallWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6BD24B49253CB8A900F9089A /* LocalStatsSmallWidgetView.swift */; };
+		B2339E0C255BE87300FF43FF /* Statistic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 11518693241FAECB00EBC83E /* Statistic.swift */; };
 		CDA24CD924559C9C00375D19 /* BMSGPKDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA24CD824559C9C00375D19 /* BMSGPKDataService.swift */; };
 		CDA24CDA24559E3E00375D19 /* BMSGPKDataService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CDA24CD824559C9C00375D19 /* BMSGPKDataService.swift */; };
 		CDA50DE0242C7D330055BE4A /* CSV in Embed Frameworks */ = {isa = PBXBuildFile; productRef = 115186B3241FB00000EBC83E /* CSV */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -907,6 +907,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B2339E0C255BE87300FF43FF /* Statistic.swift in Sources */,
 				111C76B62412C90500368F08 /* SystemColor.swift in Sources */,
 				115186AA241FAFCE00EBC83E /* JHUWebDataService.swift in Sources */,
 				115186A9241FAFCE00EBC83E /* DataService.swift in Sources */,
@@ -955,7 +956,6 @@
 				3447B4BB241E7631003914AF /* RegionListController.swift in Sources */,
 				11672A1C24114922000B2466 /* PercentValueFormatter.swift in Sources */,
 				115186A3241FAFCA00EBC83E /* Region.swift in Sources */,
-				115186A2241FAFCA00EBC83E /* Statistic.swift in Sources */,
 				116EC0A82410DF48006E4559 /* RegionPanelController.swift in Sources */,
 				1124F64C24238C600002641D /* Menu.swift in Sources */,
 				11E9FE0C244DB2E200455088 /* RKIDataService.swift in Sources */,
